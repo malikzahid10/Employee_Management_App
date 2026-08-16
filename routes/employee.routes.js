@@ -9,6 +9,7 @@ const {
   registerEmployee,
   getOwnProfile,
   updateOwnProfile,
+  getEmployees,
 } = require("../controllers/employee.controllers");
 
 const employeeRouter = express.Router();
@@ -34,6 +35,13 @@ employeeRouter.put(
   permissionAuthoraize("update_own_profile"),
   updateOwnProfileValidate,
   updateOwnProfile,
+);
+
+employeeRouter.get(
+  "/",
+  authenticateJwt,
+  permissionAuthoraize("get_employee"),
+  getEmployees,
 );
 
 module.exports = employeeRouter;

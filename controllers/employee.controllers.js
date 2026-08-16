@@ -117,8 +117,29 @@ const updateOwnProfile = async (req, res) => {
   }
 };
 
+const getEmployees = async (req, res) => {
+  try {
+    const employees = await Employee.findAll({
+      include: {
+        model: User,
+        attributes: ["id", "userName", "email", "isActive"],
+      },
+    });
+    return res.status(200).json({
+      message: "Employee fetched Successfully!",
+      employees,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
 module.exports = {
   registerEmployee,
   getOwnProfile,
   updateOwnProfile,
+  getEmployees,
 };
