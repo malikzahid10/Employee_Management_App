@@ -42,7 +42,28 @@ const updateOwnProfileValidate = (req, res, next) => {
   next();
 };
 
+const updateEmployeeSchema = Joi.object({
+  firstName: Joi.string().min(3).max(40).optional(),
+  lastName: Joi.string().max(40).min(3).optional(),
+  department: Joi.string().min(1).optional(),
+  salary: Joi.number().positive().optional(),
+});
+
+const updateEmployeeValidate = (req, res, next) => {
+  const { error } = updateEmployeeSchema.validate(req.body, {
+    abortEarly: false,
+  });
+
+  if (error) {
+    return res.status(400).json({
+      errors: error.details.map((err) => err.message),
+    });
+  }
+  next();
+};
+
 module.exports = {
   employeeValidate,
   updateOwnProfileValidate,
+  updateEmployeeValidate,
 };
